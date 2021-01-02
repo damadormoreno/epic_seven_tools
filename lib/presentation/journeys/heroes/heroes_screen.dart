@@ -1,8 +1,8 @@
 import 'package:epic_seven_tools/common/constants/size_constans.dart';
 import 'package:epic_seven_tools/di/get_it.dart';
-import 'package:epic_seven_tools/domain/entities/hero_entity.dart';
-import 'package:epic_seven_tools/presentation/journeys/heroes/hero_card_widget.dart';
 import 'package:epic_seven_tools/presentation/blocs/hero_list/hero_list_cubit.dart';
+import 'package:epic_seven_tools/presentation/journeys/heroes/checkbox_bottom_sheet_widget.dart';
+import 'package:epic_seven_tools/presentation/journeys/heroes/hero_card_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:epic_seven_tools/common/extensions/size_extension.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -34,8 +34,10 @@ class _HeroesScreenState extends State<HeroesScreen>
   @override
   Widget build(BuildContext context) {
     super.build(context);
-    return BlocProvider(
-      create: (context) => heroListCubit,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => heroListCubit),
+      ],
       child: Scaffold(
         body: Container(
           child: BlocBuilder<HeroListCubit, HeroListState>(
@@ -47,14 +49,23 @@ class _HeroesScreenState extends State<HeroesScreen>
                     backgroundColor: Colors.blue,
                   ),
                 );
-              } else if (state is HeroListLoaded) {
+              } else if (state is HeroListLoaded
+                  //|| state is FilterListLoaded
+                  ) {
+/*                 List<HeroEntity> listToShow;
+                if (state is HeroListLoaded) {
+                  listToShow = state.heroes;
+                } else if (state is FilterListLoaded) {
+                  listToShow = state.heroes;
+                } */
                 return SafeArea(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: GridView.count(
+                      childAspectRatio: 1,
                       mainAxisSpacing: Sizes.dimen_10.h,
                       crossAxisSpacing: Sizes.dimen_10.w,
-                      crossAxisCount: 3,
+                      crossAxisCount: 2,
                       children: state.heroes
                           .map(
                             (hero) => HeroCardWidget(
@@ -69,6 +80,28 @@ class _HeroesScreenState extends State<HeroesScreen>
               return const SizedBox.shrink();
             },
           ),
+        ),
+        floatingActionButton: BlocBuilder<HeroListCubit, HeroListState>(
+          builder: (context, state) {
+            return FloatingActionButton(
+              backgroundColor: Theme.of(context).primaryColor,
+              onPressed: () {
+                showModalBottomSheet<void>(
+                    backgroundColor: Theme.of(context).primaryColor,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20.0),
+                    ),
+                    context: context,
+                    builder: (BuildContext context) {
+                      return CheckboxBottomSheetWidget();
+                    });
+              },
+              child: Icon(
+                Icons.filter_list_alt,
+                color: Colors.white,
+              ),
+            );
+          },
         ),
       ),
     );

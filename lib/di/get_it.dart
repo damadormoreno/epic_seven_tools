@@ -29,7 +29,10 @@ Future init() async {
 
   //Blocs
 
-  getItInstance.registerFactory(() => HeroListCubit(
+  getItInstance.registerLazySingleton(() => HeroListCubit(
         getHeroes: getItInstance(),
+        heroesRaw: [],
       ));
+
+  //getItInstance.registerFactory(() => CheckBoxCubit(heroes: []));
 }

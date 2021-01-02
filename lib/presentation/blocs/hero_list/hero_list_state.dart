@@ -27,3 +27,14 @@ class HeroListLoaded extends HeroListState {
   @override
   List<Object> get props => [heroes];
 }
+
+class FilterListLoaded extends HeroListState {
+  final List<HeroEntity> heroes;
+
+  const FilterListLoaded({
+    this.heroes,
+  });
+
+  @override
+  List<Object> get props => [heroes];
+}

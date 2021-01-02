@@ -1,5 +1,7 @@
 import 'package:bottom_navy_bar/bottom_navy_bar.dart';
+import 'package:epic_seven_tools/common/constants/size_constans.dart';
 import 'package:epic_seven_tools/presentation/journeys/heroes/heroes_screen.dart';
+import 'package:epic_seven_tools/common/extensions/size_extension.dart';
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -31,6 +33,16 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: Text('E7 Tools'),
+        actions: [
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.search,
+              color: Colors.white,
+              size: Sizes.dimen_12.h,
+            ),
+          ),
+        ],
       ),
       body: SizedBox.expand(
         child: PageView(
